@@ -82,23 +82,23 @@
             data-have-a-winner
         >
             <div
-                data-block-id="1"
+                data-markablebox-id="1"
                 data-box-value="circle"
                 is-winner
             >1</div>
-            <div data-block-id="2" data-box-value="cross">2</div>
-            <div data-block-id="3" data-box-value="cross">3</div>
-            <div data-block-id="4">4</div>
+            <div data-markablebox-id="2" data-box-value="cross">2</div>
+            <div data-markablebox-id="3" data-box-value="cross">3</div>
+            <div data-markablebox-id="4">4</div>
             <div
-                data-block-id="5"
+                data-markablebox-id="5"
                 data-box-value="circle"
                 is-winner
             >5</div>
-            <div data-block-id="6" data-box-value="circle">6</div>
-            <div data-block-id="7" data-box-value="cross">7</div>
-            <div data-block-id="8">8</div>
+            <div data-markablebox-id="6" data-box-value="circle">6</div>
+            <div data-markablebox-id="7" data-box-value="cross">7</div>
+            <div data-markablebox-id="8">8</div>
             <div
-                data-block-id="9"
+                data-markablebox-id="9"
                 data-box-value="circle"
                 is-winner
             >9</div>
@@ -111,11 +111,11 @@
             container.removeAttribute('data-have-a-winner')
 
             document.querySelectorAll('.flex-container > div')
-                .forEach(block => {
+                .forEach(markablebox => {
                     [
                         'data-box-value',
                         'is-winner',
-                    ].forEach(attribute => block.removeAttribute(attribute))
+                    ].forEach(attribute => markablebox.removeAttribute(attribute))
                 })
         }
 
@@ -148,34 +148,153 @@
             return container && container.dataset.haveAWinner != undefined
         }
 
-        function blockCanBeChecked(block) {
-            if (!block) {
+        function markableboxCanBeChecked(markablebox) {
+            if (!markablebox) {
                 return false;
             }
 
-            return !haveAWinner() && block.dataset.blockId != undefined && !block.dataset.boxValue
+            return !haveAWinner() && markablebox.dataset.markableboxId != undefined && !markablebox.dataset.boxValue
         }
 
-        function checkBlock(block) {
-            let canBeChecked = blockCanBeChecked(block)
+        function checkBlock(markablebox) {
+            let canBeChecked = markableboxCanBeChecked(markablebox)
 
             if (!canBeChecked || !getSelectionType()) {
-                console.log('Invalido', block.dataset.blockId, block.dataset.boxValue != undefined, canBeChecked)
+                console.log('Invalido', markablebox.dataset.markableboxId, markablebox.dataset.boxValue != undefined, canBeChecked)
                 return
             }
 
-            console.log('canBeChecked:', canBeChecked, 'getSelectionType', getSelectionType())
-            block.setAttribute('data-box-value', getSelectionType())
+            markablebox.setAttribute('data-box-value', getSelectionType())
             invertSelectionType()
+            checkIfMovementMakeAWinner()
+        }
+
+        function allEqual(array) {
+            if (!Array.isArray(array) || !array.length) {
+                return false
+            }
+
+          return array.every( v => v === array[0])
+        }
+
+        function markableboxIdsIsValid(markableboxIds) {
+            if (
+                !markableboxIds ||
+                typeof markableboxIds != "object" ||
+                markableboxIds[0] == undefined ||
+                markableboxIds.length != 3
+            ) {
+                return false
+            }
+
+            return true
+        }
+
+        function getValuesByBlockIds(markableboxIds) {
+            if (!markableboxIdsIsValid(markableboxIds)) {
+                return null;
+            }
+
+            let values = []
+
+            markableboxIds.forEach(id => {
+                let markablebox = document.querySelector(`.flex-container > div[data-markablebox-id="${id}"]`)
+                if (markablebox && markablebox.dataset && markablebox.dataset.boxValue != undefined) {
+                    values.push(markablebox.dataset.boxValue)
+                }
+            })
+
+            return values
+        }
+
+        function markAWinner(markableboxIds) {
+            if (!markableboxIdsIsValid(markableboxIds)) {
+                return null;
+            }
+
+            let container = document.querySelector('.flex-container')
+
+            if (!container || !container.dataset.selectorType) {
+                return null;
+            }
+
+            container.setAttribute('data-have-a-winner', 'true')
+
+            document.querySelectorAll(`.flex-container > div[data-markablebox-id]`)
+                .forEach(markablebox => markablebox.removeAttribute('is-winner'))
+
+            markableboxIds.forEach(id => {
+                let markablebox = document.querySelector(`.flex-container > div[data-markablebox-id="${id}"]`)
+
+                if (!markablebox) {
+                    return
+                }
+
+                markablebox.setAttribute('is-winner', '')
+            })
+        }
+
+        function validWinner(values) {
+            if (!values || typeof values != "object" || values[0] == undefined || values.length != 3) {
+                return false
+            }
+
+            return allEqual(values)
+        }
+
+        function checkIfMovementMakeAWinner() {
+            let positions = [
+                [1, 2, 3],
+                [1, 5, 9],
+                [1, 4, 7],
+
+                [2 ,5 , 8],
+
+                // [3, 2, 1], // Is the same =1, 2, 3
+                [3, 5, 7],
+                [3, 6, 9],
+
+                [4, 5, 6],
+
+                // [6, 5, 4], // Is the same =4, 5, 6
+
+                [7, 8, 9],
+                // [7, 5, 3], // Is the same = 3, 5, 7
+                // [7, 4, 1], // Is the same = 1, 4, 7
+
+                [8, 5, 2],
+
+                // [9, 8, 7], // Is the same = 7, 8, 9
+                // [9, 5, 1], // Is the same =1, 5, 9
+                // [9, 6, 3], // Is the same = 3, 6, 9
+            ]
+
+            let firstWinner = positions.find(position => validWinner(getValuesByBlockIds(position)))
+
+            /* *
+            let equals = []
+            positions.forEach(position => {
+                console.log(position)
+                if (validWinner(getValuesByBlockIds(position))) {
+                    equals.push(position)
+                }
+            })
+            /**/
+
+            if (!firstWinner) {
+                return;
+            }
+
+            markAWinner(firstWinner)
         }
 
         document.addEventListener('DOMContentLoaded', (event) => {
             document.querySelector('button[resetBoard]')
                 .addEventListener('click', resetBoard)
 
-            document.querySelectorAll('.flex-container > div[data-block-id]')
-                .forEach(block => {
-                    block.addEventListener('click', event => {
+            document.querySelectorAll('.flex-container > div[data-markablebox-id]')
+                .forEach(markablebox => {
+                    markablebox.addEventListener('click', event => {
                         if (haveAWinner()) {
                             console.log('Have a winner')
                             return
