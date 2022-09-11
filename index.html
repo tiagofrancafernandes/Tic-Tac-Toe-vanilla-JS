@@ -20,23 +20,23 @@
             background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Red_x.svg/1200px-Red_x.svg.png);
         }
 
-        .flex-container:not([have-a-winner])[data-selector-type="cross"] > div:hover:not([data-box-value]) {
+        .flex-container:not([data-have-a-winner])[data-selector-type="cross"] > div:hover:not([data-box-value]) {
             background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Red_x.svg/1200px-Red_x.svg.png);
             cursor: pointer !important;
             opacity: 0.6;
         }
 
-        .flex-container[have-a-winner] > div:not([is-winner]) {
+        .flex-container[data-have-a-winner] > div:not([is-winner]) {
             opacity: 0.3;
             background-color: gray;
         }
 
-        .flex-container[have-a-winner] > div[is-winner] {
+        .flex-container[data-have-a-winner] > div[is-winner] {
             opacity: 1;
             background-color: green;
         }
 
-        .flex-container:not([have-a-winner]) > div[data-box-value]:hover {
+        .flex-container:not([data-have-a-winner]) > div[data-box-value]:hover {
             cursor: not-allowed !important;
         }
 
@@ -68,24 +68,24 @@
         <div
             class="flex-container"
             data-selector-type="cross"
-            have-a-winner
+            data-have-a-winner
         >
-            <div data-box-value="circle" is-winner>1</div>
-            <div data-box-value="cross">2</div>
-            <div data-box-value="cross">3</div>
-            <div>4</div>
-            <div data-box-value="circle" is-winner>5</div>
-            <div data-box-value="circle">6</div>
-            <div data-box-value="cross">7</div>
-            <div>8</div>
-            <div data-box-value="circle" is-winner>9</div>
+            <div data-block-id="1" data-box-value="circle" is-winner>1</div>
+            <div data-block-id="2" data-box-value="cross">2</div>
+            <div data-block-id="3" data-box-value="cross">3</div>
+            <div data-block-id="4">4</div>
+            <div data-block-id="5" data-box-value="circle" is-winner>5</div>
+            <div data-block-id="6" data-box-value="circle">6</div>
+            <div data-block-id="7" data-box-value="cross">7</div>
+            <div data-block-id="8">8</div>
+            <div data-block-id="9" data-box-value="circle" is-winner>9</div>
         </div>
     </body>
     <script>
         function resetBoard() {
             let container = document.querySelector('.flex-container')
 
-            container.removeAttribute('have-a-winner')
+            container.removeAttribute('data-have-a-winner')
 
             document.querySelectorAll('.flex-container > div')
                 .forEach(block => {
@@ -96,9 +96,56 @@
                 })
         }
 
+        function getSelectionType() {
+            let container = document.querySelector('.flex-container')
+
+            if (!container || !container.dataset.selectorType) {
+                return null;
+            }
+
+            return container.dataset.selectorType
+        }
+
+        function haveAWinner() {
+            let container = document.querySelector('.flex-container')
+            return container && container.dataset.haveAWinner != undefined
+        }
+
+        function blockCanBeChecked(block) {
+            if (!block) {
+                return false;
+            }
+
+            return !haveAWinner() && block.dataset.blockId != undefined && !block.dataset.boxValue
+        }
+
+        function checkBlock(block) {
+            let canBeChecked = blockCanBeChecked(block)
+
+            if (!canBeChecked || !getSelectionType()) {
+                console.log('Invalido', block.dataset.blockId, block.dataset.boxValue != undefined, canBeChecked)
+                return
+            }
+
+            console.log('canBeChecked:', canBeChecked, 'getSelectionType', getSelectionType())
+            block.setAttribute('data-box-value', getSelectionType())
+        }
+
         document.addEventListener('DOMContentLoaded', (event) => {
             document.querySelector('button[resetBoard]')
                 .addEventListener('click', resetBoard)
+
+            document.querySelectorAll('.flex-container > div[data-block-id]')
+                .forEach(block => {
+                    block.addEventListener('click', event => {
+                        if (haveAWinner()) {
+                            console.log('Have a winner')
+                            return
+                        }
+
+                        checkBlock(event.target)
+                    })
+                })
         });
     </script>
 </html>
