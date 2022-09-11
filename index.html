@@ -41,6 +41,7 @@
         }
 
         .flex-container {
+            user-select: none;
           display: flex;
           flex-wrap: wrap;
           background-color: DodgerBlue;
@@ -52,6 +53,7 @@
         .flex-container > div {
           background-color: #f1f1f1;
           width: 30%;
+          min-height: 32vh;
           height: 32vh;
           margin: 5pt auto;
           vertical-align: middle;
@@ -60,16 +62,43 @@
         </style>
     </head>
     <body>
-        <div class="flex-container" data-selector-type="cross" have-a-winner>
-            <div data-box-value="circle">1</div>
+        <div>
+            <button type="button" resetBoard>resetBoard</button>
+        </div>
+        <div
+            class="flex-container"
+            data-selector-type="cross"
+            have-a-winner
+        >
+            <div data-box-value="circle" is-winner>1</div>
             <div data-box-value="cross">2</div>
-            <div>3</div>
+            <div data-box-value="cross">3</div>
             <div>4</div>
-            <div>5</div>
-            <div data-box-value="circle" is-winner>6</div>
-            <div>7</div>
+            <div data-box-value="circle" is-winner>5</div>
+            <div data-box-value="circle">6</div>
+            <div data-box-value="cross">7</div>
             <div>8</div>
-            <div>9</div>
+            <div data-box-value="circle" is-winner>9</div>
         </div>
     </body>
+    <script>
+        function resetBoard() {
+            let container = document.querySelector('.flex-container')
+
+            container.removeAttribute('have-a-winner')
+
+            document.querySelectorAll('.flex-container > div')
+                .forEach(block => {
+                    [
+                        'data-box-value',
+                        'is-winner',
+                    ].forEach(attribute => block.removeAttribute(attribute))
+                })
+        }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            document.querySelector('button[resetBoard]')
+                .addEventListener('click', resetBoard)
+        });
+    </script>
 </html>
