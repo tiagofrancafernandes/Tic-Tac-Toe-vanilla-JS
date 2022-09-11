@@ -11,64 +11,65 @@
                 --cross-img: url(https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Red_x.svg/1200px-Red_x.svg.png);
             }
 
-        .flex-container > div {
-          background-repeat: no-repeat;
-          background-size: 50%;
-          background-position: center;
-        }
+            .flex-container>div {
+                background-repeat: no-repeat;
+                background-size: 50%;
+                background-position: center;
+            }
 
-        [data-box-value="circle"] {
-            background-image: var(--circle-img);
-        }
-        [data-box-value="cross"] {
-            background-image:  var(--cross-img);
-        }
+            [data-box-value="circle"] {
+                background-image: var(--circle-img);
+            }
 
-        .flex-container:not([data-have-a-winner])[data-selector-type="cross"] > div:hover:not([data-box-value]) {
-            background-image: var(--cross-img);
-            cursor: pointer !important;
-            opacity: 0.6;
-        }
+            [data-box-value="cross"] {
+                background-image: var(--cross-img);
+            }
 
-        .flex-container:not([data-have-a-winner])[data-selector-type="circle"] > div:hover:not([data-box-value]) {
-            background-image: var(--circle-img);
-            cursor: pointer !important;
-            opacity: 0.6;
-        }
+            .flex-container:not([data-have-a-winner])[data-selector-type="cross"]>div:hover:not([data-box-value]) {
+                background-image: var(--cross-img);
+                cursor: pointer !important;
+                opacity: 0.6;
+            }
 
-        .flex-container[data-have-a-winner] > div:not([is-winner]) {
-            opacity: 0.3;
-            background-color: gray;
-        }
+            .flex-container:not([data-have-a-winner])[data-selector-type="circle"]>div:hover:not([data-box-value]) {
+                background-image: var(--circle-img);
+                cursor: pointer !important;
+                opacity: 0.6;
+            }
 
-        .flex-container[data-have-a-winner] > div[is-winner] {
-            opacity: 1;
-            background-color: green;
-        }
+            .flex-container[data-have-a-winner]>div:not([is-winner]) {
+                opacity: 0.3;
+                background-color: gray;
+            }
 
-        .flex-container:not([data-have-a-winner]) > div[data-box-value]:hover {
-            cursor: not-allowed !important;
-        }
+            .flex-container[data-have-a-winner]>div[is-winner] {
+                opacity: 1;
+                background-color: green;
+            }
 
-        .flex-container {
-            user-select: none;
-          display: flex;
-          flex-wrap: wrap;
-          background-color: DodgerBlue;
-          width: 90%;
-          height: 100vh;
-          margin: 1pt auto;
-        }
+            .flex-container:not([data-have-a-winner])>div[data-box-value]:hover {
+                cursor: not-allowed !important;
+            }
 
-        .flex-container > div {
-          background-color: #f1f1f1;
-          width: 30%;
-          min-height: 32vh;
-          height: 32vh;
-          margin: 5pt auto;
-          vertical-align: middle;
-          text-align: center;
-        }
+            .flex-container {
+                user-select: none;
+                display: flex;
+                flex-wrap: wrap;
+                background-color: DodgerBlue;
+                width: 90%;
+                height: 100vh;
+                margin: 1pt auto;
+            }
+
+            .flex-container>div {
+                background-color: #f1f1f1;
+                width: 30%;
+                min-height: 32vh;
+                height: 32vh;
+                margin: 5pt auto;
+                vertical-align: middle;
+                text-align: center;
+            }
         </style>
     </head>
     <body>
@@ -80,15 +81,27 @@
             data-selector-type="cross"
             data-have-a-winner
         >
-            <div data-block-id="1" data-box-value="circle" is-winner>1</div>
+            <div
+                data-block-id="1"
+                data-box-value="circle"
+                is-winner
+            >1</div>
             <div data-block-id="2" data-box-value="cross">2</div>
             <div data-block-id="3" data-box-value="cross">3</div>
             <div data-block-id="4">4</div>
-            <div data-block-id="5" data-box-value="circle" is-winner>5</div>
+            <div
+                data-block-id="5"
+                data-box-value="circle"
+                is-winner
+            >5</div>
             <div data-block-id="6" data-box-value="circle">6</div>
             <div data-block-id="7" data-box-value="cross">7</div>
             <div data-block-id="8">8</div>
-            <div data-block-id="9" data-box-value="circle" is-winner>9</div>
+            <div
+                data-block-id="9"
+                data-box-value="circle"
+                is-winner
+            >9</div>
         </div>
     </body>
     <script>
