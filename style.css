@@ -1,0 +1,86 @@
+:root {
+    --circle-img: url(./circle.png);
+    --cross-img: url(./cross.png);
+}
+
+.flex-container>div {
+    background-repeat: no-repeat;
+    background-size: 50%;
+    background-position: center;
+}
+
+[data-box-value="circle"] {
+    background-image: var(--circle-img);
+}
+
+[data-box-value="cross"] {
+    background-image: var(--cross-img);
+}
+
+.flex-container:not([data-have-a-winner])[data-selector-type="cross"]>div:hover:not([data-box-value]) {
+    background-image: var(--cross-img);
+    cursor: pointer !important;
+    opacity: 0.6;
+}
+
+.flex-container:not([data-have-a-winner])[data-selector-type="circle"]>div:hover:not([data-box-value]) {
+    background-image: var(--circle-img);
+    cursor: pointer !important;
+    opacity: 0.6;
+}
+
+.flex-container[data-have-a-winner]>div:not([is-winner]) {
+    opacity: 0.3;
+    background-color: gray;
+}
+
+.flex-container[data-have-a-winner]>div[is-winner] {
+    opacity: 1;
+    background-color: green;
+}
+
+.flex-container:not([data-have-a-winner])>div[data-box-value]:hover {
+    cursor: not-allowed !important;
+}
+
+.flex-container {
+    user-select: none;
+    display: flex;
+    flex-wrap: wrap;
+    background-color: DodgerBlue;
+    width: 90%;
+    height: 100vh;
+    margin: 1pt auto;
+}
+
+.flex-container>div {
+    background-color: #f1f1f1;
+    width: 30%;
+    min-height: 32vh;
+    height: 32vh;
+    margin: 5pt auto;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.container h3 {
+    text-align: center;
+}
+
+.container, .container .actions {
+    width: 80%;
+    margin: 5pt auto;
+}
+
+.button {
+    background-color: #4CAF50;
+    /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+}

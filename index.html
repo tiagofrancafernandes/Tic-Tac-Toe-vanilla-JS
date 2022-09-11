@@ -4,104 +4,32 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Jogo da Velha</title>
-        <style>
-            :root {
-                --circle-img: url(https://cutewallpaper.org/24/painted-circle-png/circle-png-paint-stroke-circle-png-transparent-png-vhv.png);
-                --cross-img: url(https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Red_x.svg/1200px-Red_x.svg.png);
-            }
-
-            .flex-container>div {
-                background-repeat: no-repeat;
-                background-size: 50%;
-                background-position: center;
-            }
-
-            [data-box-value="circle"] {
-                background-image: var(--circle-img);
-            }
-
-            [data-box-value="cross"] {
-                background-image: var(--cross-img);
-            }
-
-            .flex-container:not([data-have-a-winner])[data-selector-type="cross"]>div:hover:not([data-box-value]) {
-                background-image: var(--cross-img);
-                cursor: pointer !important;
-                opacity: 0.6;
-            }
-
-            .flex-container:not([data-have-a-winner])[data-selector-type="circle"]>div:hover:not([data-box-value]) {
-                background-image: var(--circle-img);
-                cursor: pointer !important;
-                opacity: 0.6;
-            }
-
-            .flex-container[data-have-a-winner]>div:not([is-winner]) {
-                opacity: 0.3;
-                background-color: gray;
-            }
-
-            .flex-container[data-have-a-winner]>div[is-winner] {
-                opacity: 1;
-                background-color: green;
-            }
-
-            .flex-container:not([data-have-a-winner])>div[data-box-value]:hover {
-                cursor: not-allowed !important;
-            }
-
-            .flex-container {
-                user-select: none;
-                display: flex;
-                flex-wrap: wrap;
-                background-color: DodgerBlue;
-                width: 90%;
-                height: 100vh;
-                margin: 1pt auto;
-            }
-
-            .flex-container>div {
-                background-color: #f1f1f1;
-                width: 30%;
-                min-height: 32vh;
-                height: 32vh;
-                margin: 5pt auto;
-                vertical-align: middle;
-                text-align: center;
-            }
-        </style>
+        <link rel="shortcut icon" href="circle.png" type="image/x-icon">
+        <title>tic-tac-toe | Jogo da Velha</title>
+        <link rel="stylesheet" href="style.css">
     </head>
     <body>
-        <div>
-            <button type="button" resetBoard>resetBoard</button>
+        <div class="container">
+            <h3>
+                Tic-Tac-Toe | Jogo da Velha
+            </h3>
+
+            <div class="actions">
+                <button type="button" class="button" resetBoard>Reset Board</button>
+            </div>
         </div>
+
         <div
-            class="flex-container"
-            data-selector-type="cross"
-            data-have-a-winner
-        >
-            <div
-                data-markablebox-id="1"
-                data-box-value="circle"
-                is-winner
-            >1</div>
-            <div data-markablebox-id="2" data-box-value="cross">2</div>
-            <div data-markablebox-id="3" data-box-value="cross">3</div>
+            class="flex-container" data-selector-type="cross">
+            <div data-markablebox-id="1">1</div>
+            <div data-markablebox-id="2">2</div>
+            <div data-markablebox-id="3">3</div>
             <div data-markablebox-id="4">4</div>
-            <div
-                data-markablebox-id="5"
-                data-box-value="circle"
-                is-winner
-            >5</div>
-            <div data-markablebox-id="6" data-box-value="circle">6</div>
-            <div data-markablebox-id="7" data-box-value="cross">7</div>
+            <div data-markablebox-id="5">5</div>
+            <div data-markablebox-id="6">6</div>
+            <div data-markablebox-id="7">7</div>
             <div data-markablebox-id="8">8</div>
-            <div
-                data-markablebox-id="9"
-                data-box-value="circle"
-                is-winner
-            >9</div>
+            <div data-markablebox-id="9">9</div>
         </div>
     </body>
     <script>
