@@ -2,6 +2,7 @@
 Tic-Tac-Toe | Jogo da Velha
 
 [Demo](https://tiagofrancafernandes.github.io/Tic-Tac-Toe-vanilla-JS/)
+[Video](https://www.youtube.com/watch?v=FrVrX87l1yQ)
 
 ----
 
